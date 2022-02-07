@@ -47,14 +47,23 @@ author:
   # twitter:             <username>
 
 # Add links to the sidebar.
+# url은 _featured_categories의 .md파일명과 같아야 한다.
 menu:
-  - title:             Example
-    url:               /example/
-  - title:             Documentation
-    url:               /docs/
   - title:             About
     url:               /about/
-
+  - title:             Posts
+    url:		        	 /posts/
+    submenu:      
+      - title:		     Python
+        url:			     /python/
+      - title:		     FastAPI
+        url:		    	 /fastapi/
+      - title:		     AWS
+        url:		    	 /aws/
+  - title:             Example1
+    url:               /example11/
+  - title:             Example2
+    url:               /example22/
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
 legal:
@@ -79,7 +88,7 @@ paginate_path:         /:num/
 # Theme
 # ---------------------------------------------------------------------------------------
 
-# theme: jekyll-theme-hydejack
+theme: jekyll-theme-hydejack
 remote_theme: hydecorp/hydejack@v9.0.0-rc.6
 
 

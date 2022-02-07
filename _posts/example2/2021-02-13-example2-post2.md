@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hydejack, Stripe-ified
+title: example2-post2
 image: /assets/img/blog/jj-ying.jpg
 accent_image: 
   background: url('/assets/img/blog/jj-ying.jpg') center/cover
@@ -10,9 +10,11 @@ theme_color: '#ccc'
 description: >
   Version 9.1 provides minor design changes, new features, and closes multiple issues.
 invert_sidebar: true
+categories:
+  - example2
 ---
 
-# What's New in Hydejack 9.1?
+# Title 우선순위
 
 What's New in Hydejack 9.1?
 
