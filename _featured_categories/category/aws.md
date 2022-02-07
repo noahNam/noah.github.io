@@ -1,6 +1,6 @@
 ---
 layout: list
-category: posts
+category: aws
 bigtitle: AWS
 slug: aws
 description: >

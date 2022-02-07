@@ -1,6 +1,6 @@
 ---
 layout: list
-category: posts
+category: python
 bigtitle: Python
 slug: python
 description: >

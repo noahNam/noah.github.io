@@ -1,6 +1,6 @@
 ---
 layout: list
-category: posts
+category: fastapi
 bigtitle: FastAPI
 slug: fastapi
 description: >
