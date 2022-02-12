@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://username.github.io/sitemap.xml
+Sitemap: https://noahnam.github.io/sitemap.xml
 
 <!-- 
 // 모든 웹사이트 콘텐츠에 대한 모든 웹 클롤러의 접근을 차단
