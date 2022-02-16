@@ -10,7 +10,11 @@ categories:
   - design_pattern
 ---
 
+
 # 싱글톤
+
+* toc
+{:toc .large-only}
 
 ## 싱글톤이란?
 
