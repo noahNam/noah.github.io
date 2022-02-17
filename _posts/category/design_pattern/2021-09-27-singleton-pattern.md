@@ -98,8 +98,8 @@ class Singleton:
             cls.instance = super().__new__(cls)
         return cls.instance
 
-	def __init__(self, data): # 호출 시점에 따른 객체 속성 값 변경을 보기 위해 data param을 추가
-      cls = type(self)
+    def __init__(self, data): # 호출 시점에 따른 객체 속성 값 변경을 보기 위해 data param을 추가
+      cls = type(self)   # self 객체의 class를 가져온다.
       if not hasattr(cls, "_init"): # 클래스 객체에 _init 속성이 없다면
           print("__init__ is called\n")
           self.data = data
