@@ -174,7 +174,7 @@ Object created <__main__.Singleton object at 0x7fb61d665130>
 ------------------------
 instance already created: <__main__.Singleton object at 0x7fb61d665130>
 ```
-- 위 코드의 `s = Singleton()` 는 `__init__` 함수를 호출하지만 객체는 생성하지 않고,  `Singleton.get_instance()` 호출 시점에 객체가 생성된다.
+- ~~위 코드의 `s = Singleton()` 는 `__init__` 함수를 호출하지만 객체는 생성하지 않고,~~  `Singleton.get_instance()` 호출 시점에 객체가 생성된다.
 - 굳이 클래스의 생성 과정에 관여하지 않으므로 object 클래스의 `__new__` 를 사용하고, 오버라이드 하지 않는다.
 
 ## 모듈 싱클톤
