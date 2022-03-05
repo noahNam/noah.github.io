@@ -59,7 +59,7 @@ menu:
       - title:		     Python
         url:			     /python/
       - title:         Design pattern
-        url:           /design_pattern/
+        url:           /design-pattern/
       - title:		     FastAPI
         url:		    	 /fastapi/
       - title:		     AWS

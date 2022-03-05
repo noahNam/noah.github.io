@@ -2,7 +2,7 @@
 layout: list
 category: design pattern
 bigtitle: Desgin pattern
-slug: design_pattern
+slug: design-pattern
 description: >
   Python design pattern
 
