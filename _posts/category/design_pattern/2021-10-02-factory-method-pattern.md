@@ -7,7 +7,7 @@ sitemap: false
 hide_last_modified: false
 categories:
   - category
-  - design_pattern
+  - design-pattern
 ---
 
 
@@ -26,8 +26,8 @@ categories:
         - 객체(Object)는 현실의 대상(Object)과 비슷하여, 상태나 행동 등을 가지지만, 소프트웨어 관점에서는 그저 콘셉(concept), 즉 사유의 결과일 뿐이다. 소프트웨어에서 객체를 구현하기 위해서는 콘셉 이상으로 많은 것들을 사고하여 구현해야 하므로, 이를 위한 설계도로 클래스를 작성한다. 설계도를 바탕으로 객체를 소프트웨어에 실체화 하면 그것이 인스턴스(Instance)가 되고, 이 과정을 인스턴스화(instantiation)라고 한다. 실체화된 인스턴스는 메모리에 할당된다.
         - 코딩을 할 때, 클래스 생성에 따라 메모리에 할당된 객체인 인스턴스를 ‘객체’라고 부르는데, 틀린 말이 아니다. 인스턴스는 객체에 포함되는 개념이기 때문이다.
 - UML 다이어그램
-    
-    <!-- ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6e70dd29-74e7-472d-8e0b-51435dbb7e55/Untitled.png) -->
+
+![다이어그램](/assets/img/posts/factory_method/uml.png){: width="400" height="400"}
     
     - `factoryMethod()` 메소드를 포함하는 `Creator` 추상클래스가 있다.
     - `factoryMethod()` 객체 생성을 담당한다.

@@ -7,7 +7,7 @@ sitemap: false
 hide_last_modified: false
 categories:
   - category
-  - design_pattern
+  - design-pattern
 ---
 
 
