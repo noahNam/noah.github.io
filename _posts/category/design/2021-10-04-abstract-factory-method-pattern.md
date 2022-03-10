@@ -22,7 +22,7 @@ categories:
 
 ## UML 다이어그램
 - 추상 팩토리 패턴 UML 다이어그램
-![다이어그램](/assets/img/posts/factory_method/uml.png){: width="800" height="800"}
+![](/assets/img/posts/abstract_factory_pattern/abstract-factory1.png){: width="1200" height="1200"}
   - `ConcreteFactory1` 과 `ConcreteFactory2` 는 `AbstractFactory` 인터페이스에서 생성된다.
   - `ConcreteFactory1` 과 `ConcreteFactory2` 는 `AbstractFactory` 를 상속받고 `ConcreteProduct1` 과 `ConcreteProduct2`, `AnotherConcrateProduct1` , `AnotherConcreteProduct2` 인스턴스를 생성한다.
   - `ConcreteProduct1` 과 `ConcreteProduct2` 는 `AbstractProduct` 인터페이스에서 생성되고 `AnotherConcrateProduct1` 과 `AnotherConcreteProduct2` 는 `AnotherAbstractProduct` 인터페이스에서 생성된다.
@@ -30,7 +30,7 @@ categories:
   - 클라이언튼 오직 인터페이스를 통해 객체에 접근할 수 있다.
   - 추상 팩토리 패턴은 플랫폼에 필요한 서비스 생성을 알아서 처리하기 때문에 클라이언트는 플랫폼에 종속된 객체를 직접 생성할 필요가 없다.
 
-## 추상 팩토리 패턴 구현
+## 추상 팩토리 패턴 구현 예
 
 - 여러 종류의 피자를 판매하는 피자 가게 있다.
 - 이 피자가게에서는 한국식 피자와 미국식 피자를 판매하고 있고, 각각 채식주의자를 위해 채식 피자, 고기가 들어간 일반 피자를 나누어 팔고 있다.
@@ -161,7 +161,7 @@ ChickenPizza, is served with Chicken on DeluxVeggiePizzak
 
 ## 팩토리 메소드, 추상 팩토리 차이점
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7f94372d-1a2f-4a9a-895d-3f8bcb7bd669/Untitled.png)
+![](/assets/img/posts/abstract_factory_pattern/abstract-factory2.png){: width="800" height="800"}
 
 - 컴포지션
     - private 필드를 통하여 기존의 클래스가 새로운 클래스의 구성요소(인스턴스)로 쓰이는 것
