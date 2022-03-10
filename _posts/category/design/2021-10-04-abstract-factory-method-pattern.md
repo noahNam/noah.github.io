@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Factory Method Pattern
+title: Abstract Factory Pattern
 description: >
-    Factory Method Pattern
+    Abstract Factory Pattern
 sitemap: false
 hide_last_modified: false
 categories:
@@ -11,128 +11,188 @@ categories:
 ---
 
 
-# Factory Method Pattern
+# Abstract Factory Pattern
 
 * toc
 {:toc .large-only}
 
-## 팩토리 메소드 패턴  
-***인터페이스를 통해 객체를 생성하지만 서브 클래스가 객체 생성에 필요한 클래스를 선택한다.***
+## 추상 팩토리 패턴
+- 추상 팩토리 패턴의 주목적은 클래스를 직접 호출하지 않고 관련된 객체를 생성하는 인터페이스를 제공하는 것이다.
+- 이전 글에서 포스팅한 팩토리 메소드가 인스턴스 생성을 서브 클래스에게 맡기는 반면 추상 팩토리 패턴에서는 추상 팩토리 메소드가 관련된 객체의 집합을 생성한다.
 
-- 팩토리 메소드 디자인은 유동적이다. 심플 팩토리 메소드와는 다르게 특정 객체 대신 인스턴스나 서브 클래스 객체를 반환할 수도 있다.
-    - 객체와 인스턴스 차이점
-        - 객체 : 클래스에 선언된 모양 그대로 생성된 실체. 즉 구현할 대상
-        - 인스턴스 : 객체에 포함된다고 할 수 있다. 객체가 메모리에 할당되어 실제 사용될 때 “인스턴스” 라고 부른다.
-        - 객체(Object)는 현실의 대상(Object)과 비슷하여, 상태나 행동 등을 가지지만, 소프트웨어 관점에서는 그저 콘셉(concept), 즉 사유의 결과일 뿐이다. 소프트웨어에서 객체를 구현하기 위해서는 콘셉 이상으로 많은 것들을 사고하여 구현해야 하므로, 이를 위한 설계도로 클래스를 작성한다. 설계도를 바탕으로 객체를 소프트웨어에 실체화 하면 그것이 인스턴스(Instance)가 되고, 이 과정을 인스턴스화(instantiation)라고 한다. 실체화된 인스턴스는 메모리에 할당된다.
-        - 코딩을 할 때, 클래스 생성에 따라 메모리에 할당된 객체인 인스턴스를 ‘객체’라고 부르는데, 틀린 말이 아니다. 인스턴스는 객체에 포함되는 개념이기 때문이다.
-
-- UML 다이어그램
+## UML 다이어그램
+- 추상 팩토리 패턴 UML 다이어그램
 ![다이어그램](/assets/img/posts/factory_method/uml.png){: width="800" height="800"}
-  - `factoryMethod()` 메소드를 포함하는 `Creator` 추상클래스가 있다.
-  - `factoryMethod()` 객체 생성을 담당한다.
-  - `ConcreateCreator` 클래스의 `factoryMethod()` 는 `Creator` 추상 클래스의 메소드를 구현하고 생성된 객체를 런타임에 반환한다.
-  - `ConcreateCreator` 클래스는 `ConcreateProduct` 를 생성하고 생성된 객체는 `Product` 클래스를 상속받아 `Product` 인터페이스의 모든 함수를 포함시킨다.
-  - 정리하면 `Creator` 인터페이스의 `factoryMethod()`  와 `ConcreateCreator` 클래스는 `Product`  클래스의 어떤 서브 클래스를 생성할지를 결정한다.
+  - `ConcreteFactory1` 과 `ConcreteFactory2` 는 `AbstractFactory` 인터페이스에서 생성된다.
+  - `ConcreteFactory1` 과 `ConcreteFactory2` 는 `AbstractFactory` 를 상속받고 `ConcreteProduct1` 과 `ConcreteProduct2`, `AnotherConcrateProduct1` , `AnotherConcreteProduct2` 인스턴스를 생성한다.
+  - `ConcreteProduct1` 과 `ConcreteProduct2` 는 `AbstractProduct` 인터페이스에서 생성되고 `AnotherConcrateProduct1` 과 `AnotherConcreteProduct2` 는 `AnotherAbstractProduct` 인터페이스에서 생성된다.
+  - 추상 팩토리 패턴에서 클라이언트는 객체 생성 로직과 상관없이 생성된 객체를 사용한다.
+  - 클라이언튼 오직 인터페이스를 통해 객체에 접근할 수 있다.
+  - 추상 팩토리 패턴은 플랫폼에 필요한 서비스 생성을 알아서 처리하기 때문에 클라이언트는 플랫폼에 종속된 객체를 직접 생성할 필요가 없다.
 
-### 팩토리 메소드 구현
+## 추상 팩토리 패턴 구현
 
-- Linkedin이나 페이스북 같은 소셜 네트워크에 특정 사용자나 기업의 프로필을 작성하는 경우를 생각해 보면 프로필에는 여러 세션이 있다.
-- Linkedin에는 특허나 경력을 기입할 수 있고, 페이스북에는 여행 사진을 올릴 수도 있다.
-- 공통적으로 기입해야 하는 개인 정보도 있다.
-- 이렇게 서비스 종류에 따라 알맞은 내용을 포함하는 프로필을 생성하는 코드를 구현해 보겠다.
+- 여러 종류의 피자를 판매하는 피자 가게 있다.
+- 이 피자가게에서는 한국식 피자와 미국식 피자를 판매하고 있고, 각각 채식주의자를 위해 채식 피자, 고기가 들어간 일반 피자를 나누어 팔고 있다.
+- 채식피자는 크러스트와 채소, 양념으로 조리하고, 일반 피자는 채식 피자 위에 여러가지 토핑을 추가해 조리한다.
+- 핵심은 채식피자 베이스로 일반 피자가 만들어진다는 점이다.
+
+### AbstractProduct, ConcreateProduct 생성
+
+- `AbstractProduct`에 해당하는 `VegPizza` , `NonVegPizza`  추상 클래스를 생성한다.
+- 각 클래스에는 `prepare()` 와 `serve()`메소드를 선언한다.
+- `AbstractProduct` 별로 `ConcreteProducts` 를 선언한다.
+- `DeluxVeggiePizza`와 `MexicanVegPizza`를 선언하고 `prepare()` 메소드를 구현한다. UML 다이어그럼에서의 `ConcreteProduct1`, `ConcreteProduct2` 에 해당한다.
+- `ChickenPizza`와  `HamPizza`를 선언하고 serve() 메소드를 구현한다.  UML 다이어그럼에서의 `AnotherConcreteProduct1`, `AnotherConcreteProduct2` 에 해당한다.
 
 ```python
 from abc import ABCMeta, abstractmethod
 
-class Section(metaclass=ABCMeta):
-    @abstractmethod
-    def describe(self):
-        pass
-
-class PersonalSection(Section):  # 개인 섹션
-    def describe(self):
-        print("Personal Section")
-
-class AlbumSection(Section):  # 앨범 섹션
-    def describe(self):
-        print("Album Section")
-
-class PatentSection(Section):  # 특허 섹션
-    def describe(self):
-        print("Patent Section")
-
-class CareerSection(Section):  # 경력 섹션
-    def describe(self):
-        print("Career Section")
-```
-- 우선 `Product` 인터페이스를 선언한다. `Section` 추상 클래스는 프로필의 각 세션을 나타내고, 간단하게 `describe()` 추상 메소드만 포함한다.
-- 다음으로 `ConcreateProduct` 클래스에 해당하는 `PersonalSection`, `AlbumSection`, `PatentSection`, `CareerSection` 클래스를 선언하고, 각 클래스에는 해당 세션명을 출력하는 `describe()` 가 있다.
-
-<br>
-```python
-from abc import ABCMeta, abstractmethod
-
-from factory.factory_method_section import PersonalSection, AlbumSection, PatentSection, CareerSection
-
-class Profile(metaclass=ABCMeta):
+class VegPizza(metaclass=ABCMeta):
     def __init__(self):
-        self.sections = []
-        self.create_profile()
+        self.prepare()
 
     @abstractmethod
-    def create_profile(self):
+    def prepare(self):
         pass
 
-    def get_sections(self):
-        return self.sections
+class NonVegPizza(metaclass=ABCMeta):
+    def __init__(self, veg_pizza: VegPizza):
+        self.serve(veg_pizza)
 
-    def add_sections(self, section):
-        self.sections.append(section)
+    @abstractmethod
+    def serve(self, veg_pizza: VegPizza):
+        pass
 
-class LinkedIn(Profile):
-    def create_profile(self):
-        # 개인세션, 특허세션, 경력세션
-        self.add_sections(PersonalSection())
-        self.add_sections(PatentSection())
-        self.add_sections(CareerSection())
+class DeluxVeggiePizza(VegPizza):
+    def prepare(self):
+        print(f"Prepare {type(self).__name__}")
 
-class Facebook(Profile):
-    def create_profile(self):
-        # 개인세션, 앨범세션
-        self.add_sections(PersonalSection())
-        self.add_sections(AlbumSection())
+class MexicanVegPizza(VegPizza):
+    def prepare(self):
+        print(f"Prepare {type(self).__name__}")
 
-if __name__ == '__main__':
-    profile_type = input("어떤 소셜 네트워크의 프로필을 생성하시겠습니까? [LinkedIn or Facebook]")
-    social_network = eval(profile_type)()
-    print(f"Creating Profile type.. {type(social_network)}")
-    print(f"Creating Profile name.. {type(social_network).__name__}")
-    print(f"Profile has sections -- {social_network.get_sections()})") 
+class ChickenPizza(NonVegPizza):
+    def serve(self, veg_pizza: VegPizza):
+        print(f"{type(self).__name__}, is served with Chicken on {type(veg_pizza).__name__}")
 
-----------
-result
-----------
-어떤 소셜 네트워크의 프로필을 생성하시겠습니까? [LinkedIn or Facebook]Facebook
-Creating Profile type.. <class '__main__.Facebook'>
-Creating Profile name.. Facebook
-Profile has sections -- [<factory.factory_method_section.PersonalSection object at 0x7fd14f400250>, <factory.factory_method_section.AlbumSection object at 0x7fd14f495eb0>])
+class HamPizza(NonVegPizza):
+    def serve(self, veg_pizza: VegPizza):
+        print(f"{type(self).__name__}, is served with Ham on {type(veg_pizza).__name__}")
 ```
 
-- `Creator` 추상 클래스를  `Profile`  이름으로 선언한다. `Profile` 추상 클래스는  팩토리 메소드이자 추상 메소드인 `create_profile` 를 제공한다.
-- `Profile` 추상 클래스에는 각 프로필에 들어갈 세션에 대한 정보가 없고 서브 클래스가 결정한다.
-- `ConcreateCreator` 클래스를 생성하고 각 클래스에는 세션을 생성하는 `create_profile()` 추상 메소드를 구현한다.
-    - 소셜 네트워크 서비스 특성에 맞는 세션을 포함한 프로필을 생성한다
-    - `LinkedIn`  개인세션, 특허세션, 경력세션
-    - `Facebook`  개인세션, 앨범세션
-- 마지막으로 클라이언트 코드를 작성하여 호출한다.
-    - ***인터페이스를 통해 객체를 생성 →*** FaceBook을 입력하면 `Facebook[ConcreateCreator]` 클래스가 생성되고, 슈퍼 클래스인 `Profile` 클래스의 `__init__` 메소드에서 추상메소드를 호출한다. 이에 추상메소드의 구현체인 `Facebook` 클래스의 `create_profile` 이 호출된다.
-    - ***서브 클래스가 객체 생성에 필요한 클래스를 선택→*** `create_profile()` 호출을 통해 내부적으로는 `ConcreateProduct` 클래스인 `PersonalSection`과 `AlbumSection` 이 생성된다.
+### AbstractFactory, ConcreteFactory 생성
 
-## 팩토리 메소드 패턴의 장점
+- 우선 인터페이스 추상 클래스 `PizzaFactorty`  를 선언한다.
+- `PizzaFactorty` 클래스에는 `ConcreteFactory` 가 상속받을 `create_veg_pizza()` (채식주의자를 위한 피자), `create_non_veg_pizza` (채식주의자와 상관없는 피자) 두개의 추상 메소드가 있다.
+- `ConcreteFactory` 에 해당하는 `KoreanPizzaFactory` , `AmericanPizzaFactory` 2개 클래스를 생성한다.
 
-- 특정 클래스에 종속적이지 않기 때문에 개발 및 구현이 쉽다. `ConcreateProduct` 클래스가 아닌 `Product` 인터페이스에 의존한다.
-- 객체를 생성하는 코드와 활용하는 코드가 분리돼 읜존성이 줄어든다. 클라이언트에서는 어떤 인자를 넘겨야 하고, 어떤 클래스를 생성해야 하는지 걱정할 필요가 없다. 새로운 클래스를 쉽게 추가할 수 있고, 유지보수가 쉽다.
+```python
+from abc import ABCMeta, abstractmethod
 
-## 팩토리 메소드의 단점
+from factory.pizza_product_factory import DeluxVeggiePizza, ChickenPizza, MexicanVegPizza, HamPizza
 
-- 패턴을 구현할 많은 서브 클래스를 도입합으로써 코드가 복잡 해 질 수 있다.
+class PizzaFactory(metaclass=ABCMeta):
+    def __init__(self, is_veg: bool):
+        self.is_veg = is_veg
+        self.veg_pizza = self.create_veg_pizza()
+        self.non_veg_pizza = self.create_non_veg_pizza()
+
+    @abstractmethod
+    def create_veg_pizza(self):
+        print("PizzaFactory create_non_veg_pizza")
+        pass
+
+    @abstractmethod
+    def create_non_veg_pizza(self):
+        print("PizzaFactory create_non_veg_pizza")
+        pass
+
+class KoreanPizzaFactory(PizzaFactory):
+    def create_veg_pizza(self):
+        return DeluxVeggiePizza()
+
+    def create_non_veg_pizza(self):
+        if self.is_veg:
+            print(f"{type(self).__name__}, is served {type(self.veg_pizza).__name__}")
+            return None
+
+        return ChickenPizza(self.veg_pizza)
+
+class AmericanPizzaFactory(PizzaFactory):
+    def create_veg_pizza(self):
+        return MexicanVegPizza()
+
+    def create_non_veg_pizza(self):
+        if self.is_veg:
+            print(f"{type(self).__name__}, is served {type(self.veg_pizza).__name__}")
+            return None
+
+        return HamPizza(self.veg_pizza)
+```
+
+### Clinet 코드 작성
+
+- 사용자가 피자가게에서 비채식 한국식 피자를 요청하면 KoreanPizaaFactory가 채식피자를 준비하고 치킨 토핑을 얹어 제공한다.
+
+```python
+from factory.pizza_abstract_factory import AmericanPizzaFactory, KoreanPizzaFactory
+
+class PizzaStore:
+    def __init__(self):
+        pass
+
+    def make_pizzas(self, pizza_style: str, is_veg: bool):
+        if pizza_style.lower() == "k":
+            KoreanPizzaFactory(is_veg)
+        else:
+            AmericanPizzaFactory(is_veg)
+
+if __name__ == "__main__":
+    pizza = PizzaStore()
+    pizza.make_pizzas(pizza_style="K", is_veg=False)
+
+---------
+result
+---------
+Prepare DeluxVeggiePizza
+ChickenPizza, is served with Chicken on DeluxVeggiePizzak
+```
+
+## 팩토리 메소드, 추상 팩토리 차이점
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7f94372d-1a2f-4a9a-895d-3f8bcb7bd669/Untitled.png)
+
+- 컴포지션
+    - private 필드를 통하여 기존의 클래스가 새로운 클래스의 구성요소(인스턴스)로 쓰이는 것
+        
+        ```python
+        class PizzaFactory(metaclass=ABCMeta):
+            def __init__(self, is_veg: bool):
+                self.is_veg = is_veg
+                self.veg_pizza = self.create_veg_pizza()
+                self.non_veg_pizza = self.create_non_veg_pizza()    
+        
+        		def create_non_veg_pizza(self):
+                if self.is_veg:
+                    return None
+        
+                return ChickenPizza(self.veg_pizza)
+        ```
+        
+    - 새로운 클래스에 기존 클래스의 영향이 적어 기존 클래스가 변경되어도 안전함(변화에 유연함)
+    
+
+## 정리
+
+### 심플팩토리 패턴
+
+- 런타임에 클라이언트가 넘긴 객체형 인자를 기반으로 인스턴스를 생성한다.
+
+### 팩토리 메소드 패턴
+
+- 인터페이스를 통해 객체를 생성하지만 실제 생성은 서브 클래스가 담당한다.
+
+### 추상 팩토리 패턴
+
+- `Concrete` 클래스를 명시하지 않고 관련된 객체의 집단을 생성한다.
