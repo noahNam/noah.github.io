@@ -15,6 +15,7 @@ description: >
 * [AWS]{:.heading.flip-title} --- AWS
 * [Design-Pattern]{:.heading.flip-title} --- Design Pattern
 * [Markdown]{:.heading.flip-title} --- Markdown
+* [FastAPI]{:.heading.flip-title} --- FastAPI
 
 [Python]: /python/
 [Design-Pattern]: /design-pattern/
