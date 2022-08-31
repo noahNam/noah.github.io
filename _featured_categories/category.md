@@ -13,11 +13,13 @@ description: >
 ## List
 
 * [AWS]{:.heading.flip-title} --- AWS
+* [DDD]{:.heading.flip-title} --- DDD
 * [Design-Pattern]{:.heading.flip-title} --- Design Pattern
 * [Markdown]{:.heading.flip-title} --- Markdown
 * [FastAPI]{:.heading.flip-title} --- FastAPI
 
 [Python]: /python/
+[DDD]: /ddd/
 [Design-Pattern]: /design-pattern/
 [FastAPI]: /fastapi/
 [AWS]: /aws/
