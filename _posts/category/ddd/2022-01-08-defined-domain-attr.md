@@ -144,6 +144,8 @@ class OrdererValue(BaseModel):
 - 애그리거트는 군집에 속한 객체를 관리하는 루트 엔티티를 갖는다.
 - 루트 엔티티는 애그리거트에 속해 있는 엔티티와 밸류 객체를 이용해서 애그리거티거트가 구현해야 할 기능을 제공한다.
 - 애그리거르를 사용하는 코드는 애그리거트 루트가 제공하는 기능을 실행하고 애그리거트 루트를 통해서 간접적으로  애그리거트 내의 다른 엔티티나 밸류 객체에 접근한다. 이것은 애그리거트의 내부 구현을 숨겨서 애그리거트 단위로 구현을 캡슐화할 수 있도록 돕는다.
+  
+![UML](/assets/img/posts/ddd/ddd-uml.png)
 
 - 위 UML에서 애그리거트 루트인 Order는 주문 도메인 로직에 맞게 애그리거트의 상태를 관리한다. 예를 들어 Order의 배송지 정보 변경 기능은 배송지를 변경할 수 있는지 확인한 뒤에 배송지 정보를 변경한다.
     ```python
@@ -186,4 +188,19 @@ class OrdererValue(BaseModel):
         @abstractmethod
         def delete(order: Order)
     ```
-    - OrderRepository
+    - OrderRepository를 보면 대상을 찾고 저장하는 단위가 애그리거트 루트인 Order인 것을 알 수 있다.
+    - Order는 애그리거트에 속한 모든 객체를 포함하고 있으므로 결과적으로 애그리거트 단위로 저장하고 조회한다.
+- 도메인 모델을 사용해야 하는 코드는 레포지토리를 통해서 도메인 객체를 구한 뒤에 도메인 객체의 기능을 실행한다.
+    - 주문 취소 기능을 제공하는 서비스는  OrderRepository를 이용해서 Order 객체를 구하고 해당 기능을 실행한다.
+    ```
+    python
+    class OrderCancelService:
+        def __init__(self, order_repository: OrderRepository):
+            self._order_repo = order_repository
+
+        def cancel(order_number: int): -> None
+            order: Order = self._order_repo.find_by_number(order_number)
+            if not order:
+                raise NoOrderException(order_no)
+            order.cacnel()
+    ```
