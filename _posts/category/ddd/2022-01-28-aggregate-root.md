@@ -16,44 +16,99 @@ categories:
 * toc
 {:toc .large-only}
 
-## 상위모델 관계도
-![상위 모델 관계도](/assets/img/posts/ddd/주문관계.png)
-- 온라인 쇼핑몰 시스템을 개발할 때 위의 `도메인 관계도`와 같이 상위 수준 개념을 이용해서 전체 모델을 정리하면 도메인 관계를 이해하는데 도움이 된다.
-- 해당 관계도는 회원, 상품, 결제와 관련이 있다는 것을 쉽게 알 수 있다.
-
-## 객체수준 모델
-![객체수준모델](/assets/img/posts/ddd/개별객체수준.png)
-- `상위 모델 관계도`의 상위 수준 모델을 개별 객체 단위로 나타낸 그림이다.
-- `객체수준 모델`을 `상위 모델 관계도` 에 대한 이해 없이 파악하려면 오랜시간이 걸린다.
-- 도메인에서 객체 모델이 복잡해지면 개별 구성요소 위주로 모델을 이해하게 되고 전반적인 구조나 큰 수준에서 도메인 간의 관계를 파악하기 힘들어진다.
-  - 이렇게 세부적인 모델만 이해한 상태로는 코드를 수정하는 것이 꺼려지기 때문에 코드 변경을 최대한 회피하는 쪽으로 요구사항을 협의하게 된다.
-- 이렇게 `복잡한 도메인을 이해하고 관리하기 쉬운 단위로 만들려면 상위 수준에서 모델을 조망할 수 있는 방법이 필요한데, 그 방법이 바로 애그리거트`이다.
-
-## Aggregate
+## 애그리거트 루트
 ![Aggregate](/assets/img/posts/ddd/Aggregate.png)
-- 위 그림은 `객체 수준 모델`을 애그리거트 단위로 묶어서 다시 표현한 것이다. 동일한 모델이지만 애그리거트를 사용하여 모델 간의 관계를 개별 모델 수준과 상위 수준에서 모두 이해할 수 있다.
-- 애그리거트는 모델의 이해에 대한 도움뿐만 아니라, 일관성을 관리하는 기준도 된다.
-- 애그리거트 단위로 일관성을 관리하기 때문에 애그리거트는 복잡한 도메인을 단순한 구조로 만들어준다.
-- `애그리거트는 관련된 모델을 하나로 모았기 때문에 한 애그리거트에 속한 객체는 동일한 라이프 사이클을 갖는다.`
-  - 주문 애그리거트를 만들려면 Order, OrderLine, Orderer와 같은 객체를 함께 생성해야 한다.
-  - Orderer는 생성했는데 ShppingInf는 만들지 않거나 ShippingInfo를 생성하면서 Orderer를 생성하지 않는 경우는 없다.
-  - `이렇게 도메인 규칙에 따라 최초 주문 시점에 일부 객체를 만들 필요가 없는 경우도 있지만 애그리거트에 속한 구성요소는 대부분 함께 생성하고 함께 제거된다.`
+[Aggregate Post 링크](https://noahnam.github.io/category/ddd/2022-01-24-aggregate/)
 
-### Aggregate 경계
-- 애그리거트는 경계를 갖는다.
-  - 한 애그리거트에 속한 객체는 다른 애그리거트에 속하지 않는다.
-  - `애그리거트는 독립된 객체 군이며 각 애그리거트는 자기 자신을 관리할 뿐 다른 애그리거트를 관리하지 않는다.`
-  - 예를 들어 주문 애그리거트는 배송지를 변경등은 자신이 관리하지만, 주문 애그리거트에서 회원의 비밀번호를 변경하거나 상품의 가격을 변경하지는 앟는다.
-- 경계를 설정할 때 기본이 되는 것은 도메인 규칙과 요구사항이다.
-  - 도메인 규칙에 따라 함께 생성되는 구성요소는 한 애그리거트에 속할 가능성이 높다.
-  - 예를 들어 주문할 상품 갯수, 배송지 정보, 주문자 정보는 주문 시점에 함께 생성되므로 이들은 한 애그리거트에 속한다.
-  - 다른 예로 OrderLine의 주문상품 갯수를 변경하면 도메인 규칙에 따라 Order의 총 주문 금액을 새로 계산해야 한다. 이렇게 함께 변경되는 빈도가 높은 객체는 한 애그리거트에 속할 가능성이 높다.
+- 주문 애그리거트는 다음을 포함한다.
+  - 총 금액인 `totalAmounts`를 갖고 있는 `Order` 엔티티
+  - 개별 구매 상품의 갯수인 `quantity`와 금액인 `price`를 갖고 있는 `OrderLine` 밸류
 
-### Product와 Review로 보는 Aggreate
-- 상품 상세 페이지에 들어가면 상품 상세 정보와 함께 리뷰 내용을 보여줘야 한다는 요구사항이 있을 때 `Product`엔티티와 `Review`엔티티는 같은 애그리거트에 속한다고 생각할 수 있다.
-- 하지만 `Product`와 `Review`는 함께 생성되지 않고, 함께 변경되지도 않는다.
-- 또한, `Proeuct`를 변경하는 주체는 관리자이지만 `Review`를 생성하고 변경하는 주체는 고객이다.
-![.](/assets/img/posts/ddd/Aggreate경계.png)
-- `Review`의 변경이 `Product`에 영향을 주지않고 반대의 경우도 마찬가지이므로 이 둘은 서로 다른 애그리거트로 볼 수 있다.
-- 처음 도메인 모델을 만들기 시작하면 큰 애그리거트로 보이는 것들이 많지만, 도메인에 대한 경험이 생기면 애그리거트의 실제 크기는 줄어든다.
-  - `경험이 쌓일수록 다수의 애그리거트가 한 개의 엔티티 객체만 갖는 경우가 많고, 두 개 이상의 엔티티로 구성되는 애그리거트는 드물어진다고 한다.`
+- 애그리거트는 여러 객체로 구성되기 때문에 한 객체만 상태가 정상이면 안 된다. 즉, 도메인 규칙을 지키려면 애그리거트에 속한 모든 객체가 정상 상태를 가져야 한다.
+  - 구매할 상품의 갯수를 변경하면 `OrderLine` 밸류의 `quantity`를 변경하고 `Order`엔티티의 `totalAmounts`도 변경해야 한다.
+  - 그렇지 않으면 도메인 규칙을 어기고 데이터 일관성이 깨진다.
+
+- 이처럼 <strong>`애그리거트에 속한 모든 객체가 일관된 상태를 유지하려면 애그리거트 전체를 관리할 주체가 필요한데, 이 책임을 지는 것이 바로 애그리거트의 루트 엔티티이다.`</strong>
+  - 주문 애그리거트에서 루트 엔티티는 `Order` 이다. 
+  - 애그리거트에 속한 객체는 애그리거트 루트 엔티티에 직접 또는 간접적으로 속하게 된다.
+![Aggregate Root Entity](/assets/img/posts/ddd/애그리거트루트.png)
+
+## 도메인 규칙과 일관성
+ - 애그리거트 루트 엔티티의 핵심 역할은 애그리거트의 일관성이 깨지지 않도록 하는 것이다.
+ - 이를 위해 애그리거트 루트는 애그리거트가 제공해야 할 도메인 기능을 구현한다.
+   - 예로, 주문 애그리거트는 배송지 변경, 상품 변경과 같은 기능을 제공하고, 애그리거트 루트인 `Order`가 이 기능을 구현한 메소드를 제공한다.
+ - 이렇게 구현한 메소드는 도메인 규칙에 따라 애그리거트에 속한 객체의 일관성이 깨지지 않도록 구현해야 한다.
+   - 예로, 배송이 시작되기 전까지만 배송 정보를 변경할 수 있다는 규칙이 있다면, 
+   - 애그리거트 루트인 `Order`의 `change_shipping_info`메소드는 이 규칙에 따라 배송 시작 여부를 확인하고 배송지 정보를 변경할 수 있도록 구현해야 한다.
+    ```python
+    class Order(BaseModel):
+        state: bool
+        ...
+
+        # 애그리거트 루트는 도메인 규칙을 구현한 기능을 제공한다.
+        def change_shipping_info(self, new_shipping_info: ShippingInfoValue):
+            self._verify_not_yet_shipped()
+            self._set_shipping_inf(new_shipping_info)
+
+        def _verify_not_yet_shipped(self):
+            if state != OrderState.PAYMENT_WAITING and state != OrderState.PREPARING
+              raise new IllegalStateException("already shipped")
+    ```
+- 애그리거트 외부에서 애그리거트에 속한 객체를 직접 변경하면 안된다. 이것은 애그리거트 루트가 강제하는 규칙을 적용할 수 없어 모델의 일관성을 깨는 원인이 된다.
+    ```python
+    # 1번 코드
+    si: ShippingInfoValue = order.get_shipping_info()
+    si.set_address(new_address)
+
+    # 2번 코드
+    si: ShippingInfoValue = order.get_shipping_info()
+    if state != OrderState.PAYMENT_WAITING and state != OrderState.PREPARING
+      raise new IllegalStateException("already shipped")
+    si.set_address(new_address)
+    ```
+  - 1번 코드는 애그리거트 루트인 `Order`에서 `ShippingInfoValue`를 가져와 직접 정보를 변경하고 있다.
+  - 주문 상태에 상관없이 배송지 주소를 변경하는데, 이는 처음에 정한 요구사항 규칙을 무시한채 직접 DB 테이블의 데이터를 수정하는 것과 같은 결과를 만든다.
+  - 즉, <strong>`논리적인 데이터 일관성이 깨지게 된다.`</strong>
+  - 2번 코드 역시 서비스레이어에서 validation checking을 하지만 동일한 검사로직을 중복으로 할 가능성이 크기 때문에 유지보수에 불리하다.
+  
+- <strong><u>불필요한 중복을 피하고 애그리거트 루트를 통해서만 도메인 로직을 구현하는 것이 좋은데 이를 위해 2가지를 꼭 지키는 것이 좋다.</u></strong>
+  - <strong>`단순히 필드를 변경하는 set 메소드는 공개(public) 범위로 만들지 않는다.`</strong>
+    - public 형태의 set 메소드는 도메인의 의미나 의도를 표현하지 못하고, 도메인 로직을 도메인 객체가 다른 레이어로 분산 시킨다.
+    - 도메인 로직이 한 곳에 응집되지 않으므로 코드를 유지 보수할 때에도 시간이 오래 걸린다.
+    - 또한, set 형식의 이름보다는 cancel이나 change처럼 의미가 더 잘 드러나는 이름을 사용하는 것이 좋다.
+
+
+  - <strong>`밸류 타입은 불변으로 구현한다.`</strong>
+     - 밸류 객체의 값을 변경할 수 없으면 애그리거트 루트에서 밸류 객체를 구해도 애그리거트 외부에서 밸류 객체의 상태를 변경할 수 없다.
+     - 밸류 객체가 불변이면 밸류 객체의 값을 변경하는 방법은 새로운 밸류 객체를 할당하는 것 뿐이다.
+     - 아래 코드를 보면 애그리거트 루트가 제공하는 `change_shipping_info` 함수에 새로운 밸류ㅜ 객체를 전달해서 값을 변경하는 방법밖에 없다.
+    
+        ```python
+        from pydantic.dataclasses import dataclass
+
+        @dataclass(frozen=True)
+        class ShippingInfoValue(BaseModel):
+            _address: str
+            _message: str | None
+
+        @dataclass(frozen=True)
+        class OrderEntity(BaseModel):
+          ...
+          _shipping_info_value: ShippingInfoValue | None
+
+          def change_shipping_info(self, new_shipping_info):
+            object.__setattr__(self, '_shipping_info_value', new_shipping_info)
+
+        # Bad
+        class OrderService:
+          ...
+          si: ShippingInfoValue = order.get_shipping_info()
+          si._shipping_info_value = new_address
+          # cannot assign to field '_shipping_info_value'
+
+        # Good
+        class OrderService:
+          ...
+          si: ShippingInfoValue = order.get_shipping_info()
+          si.change_shipping_info(new_address)
+        ```
