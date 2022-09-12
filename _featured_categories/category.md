@@ -12,6 +12,7 @@ description: >
 
 ## List
 
+* [Python]{:.heading.flip-title} --- Python
 * [AWS]{:.heading.flip-title} --- AWS
 * [DDD]{:.heading.flip-title} --- DDD
 * [Design-Pattern]{:.heading.flip-title} --- Design Pattern
