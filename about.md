@@ -31,7 +31,7 @@ Bachelor of Engineering
 
 |Company   	|Organization   	|Position   	|
 |---	      |:---	            |:---	        |
-|Apartalk   |Engineering Team |CTO        	|
+|Apartalk   |Engineering Team |BackEnd Lead        	|
 |CUPIST     |Social Engineering Team   	|Social Team BackEnd Lead   	|
 |Nuriinfos  |Lab   	          |Software Engineer   	|
 
